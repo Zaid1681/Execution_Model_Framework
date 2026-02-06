@@ -1,0 +1,23 @@
+How Version 0 helps in a Spring project
+    Without framework
+    try {
+        emailService.send();
+    } catch (Exception e) {
+        log.error("Failed");
+    }
+
+    With this framework
+    ExecutionResult<Void> result =
+        Execution.run(() -> {
+            emailService.send();
+            return null;
+        });
+
+    if (!result.isSuccess()) {
+        log.error("Failed", result.error().cause());
+    }
+
+
+✅ No unchecked exceptions
+✅ Consistent failure handling
+✅ Future-ready (retry, timeout drop in)
