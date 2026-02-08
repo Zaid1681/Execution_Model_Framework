@@ -71,6 +71,70 @@ This framework introduces a **single, explicit execution boundary** that:
 
 ---
 
+## 🚀 Quick Example (Practical Usage)
+
+### Scenario
+
+You are building a backend service that sends notifications.  
+Some operations are **critical** (must block), others are **fire-and-forget**.
+
+---
+
+### ✅ Synchronous execution (critical flow)
+
+```java
+ExecutionResult<String> result =
+        Execution.run(() -> {
+            // business-critical operation
+            return "Welcome email sent";
+        })
+        .sync();
+
+if (result.isSuccess()) {
+    System.out.println("Success: " + result.value());
+} else {
+    System.err.println("Failure: " + result.error().message());
+}
+```
+### ⚡ Asynchronous execution (non-blocking)
+
+```java
+System.out.println("Request received");
+
+Execution.run(() -> {
+    Thread.sleep(2000); // external system call
+    return "Analytics event published";
+})
+.async()
+.onSuccess(value -> System.out.println("Async success: " + value))
+.onFailure(error -> System.err.println("Async failure: " + error.message()));
+
+System.out.println("Response returned immediately");
+```
+
+###  🧩 Why this matters in real applications
+
+Without this framework:
+
+```java
+try {
+    String result = service.call();
+    log.info(result);
+} catch (Exception e) {
+    log.error("Failed", e);
+}
+
+```
+
+## With this framework:
+
+```java
+Execution.run(service::call)
+         .sync();
+
+
+```
+---
 ## ❌ What this framework does NOT try to be
 
 - Not a thread pool replacement
