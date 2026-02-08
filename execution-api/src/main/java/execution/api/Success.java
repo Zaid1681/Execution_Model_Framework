@@ -19,6 +19,6 @@ public final class Success<T> implements ExecutionResult<T> {
 
     @Override
     public ExecutionError error() {
-        return null;
+        throw new IllegalStateException("Success has no error");
     }
 }

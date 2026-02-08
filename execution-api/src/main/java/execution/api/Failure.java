@@ -14,7 +14,7 @@ public final class Failure<T> implements ExecutionResult<T> {
 
     @Override
     public T value() {
-        return null;
+        throw new IllegalStateException("Failure has no value");
     }
 
     @Override

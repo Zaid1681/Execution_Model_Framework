@@ -1,10 +1,15 @@
 package execution.core;
 
+import execution.api.AsyncResult;
 import execution.api.ExecutionResult;
 import execution.api.Task;
 
+import java.util.concurrent.CompletableFuture;
+
 public interface ExecutionEngine {
-    <T>ExecutionResult <T> run(Task<T> task);
+
+    <T> ExecutionResult<T> executeSync(ExecutionPlan<T> plan);
+    <T> AsyncResult<T> executeAsync(ExecutionPlan<T> plan);
 }
 /*
 * Why need of 3 <T>
